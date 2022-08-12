@@ -6,7 +6,7 @@ import pyautogui
 import os
 import glob
 
-path = "C:\\Users\\Khalil\Music\\test\\*.mp3"
+path = "C:\\Users\\Khalil\\Music\\un_converted_music\\*.mp3"
 
 class convert:
     def __init__(self) -> None:
@@ -85,40 +85,52 @@ class convert:
         button_location = convert.locate_ui_element("no.png")
         convert.move_mouse(button_location)
         convert.click()
+    def select_error_ok(self):
+         pyautogui.press('enter', presses=2)
+        
     def convert_to_432(self, file_number):
-        self.prepare_application()
-        time.sleep(3)
-        self.select_file()
-        time.sleep(3)
-        self.select_open()
-        time.sleep(1)
-        pyautogui.write(self.get_file(file_number))
-        time.sleep(1)
-        self.open_file()
-        time.sleep(2)
-        self.select_effect()
-        time.sleep(2)
-        self.change_pitch()
-        time.sleep(1)
-        self.select_ok()
-        time.sleep(200)
-        self.select_file()
-        time.sleep(1)
-        self.export_file()
-        time.sleep(3)
-        self.save_files()
-        time.sleep(10)
-        self.close_application()
+        try:
+            self.prepare_application()
+            time.sleep(3)
+            self.select_file()
+            time.sleep(3)
+            self.select_open()
+            time.sleep(1)
+            pyautogui.write(self.get_file(file_number))
+            time.sleep(3)
+            self.open_file()
+            time.sleep(2)
+            self.select_effect()
+            time.sleep(2)
+            self.change_pitch()
+            time.sleep(1)
+            self.select_ok()
+            time.sleep(300)
+            self.select_file()
+            time.sleep(1)
+            self.export_file()
+            time.sleep(3)
+            self.save_files()
+            time.sleep(10)
+            self.close_application()
+        except TypeError:
+            print(str(file_number)+" could not be converted")
+            convert1.select_error_ok()
+            
 
 
     
 convert1 = convert()
 num_files = convert1.get_length()
+
+
 for files in range(num_files):
+        
+    file_name = re.sub("C:[\S][\S][A-Z|a-z]*[\S][\S][A-Z|a-z]*[\S][\S][A-Z|a-z]*[\S][\S][A-Z|a-z|_]*[\S]","",str(convert1.get_file(files)))
+    destination_path = "C:\\Users\\Khalil\\Music\\New folder\\"
+    file_path = destination_path+file_name
     time.sleep(2)
-    convert1.convert_to_432(files)
-
-
-
-
-
+    if(not(os.path.exists(file_path))):
+        convert1.convert_to_432(files)
+    else:
+        print("already converted")
